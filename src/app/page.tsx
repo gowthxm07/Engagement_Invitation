@@ -15,6 +15,7 @@ import { Scene9FinalCouple } from "@/components/scenes/Scene9FinalCouple";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
 import { TapToOpenModal } from "@/components/ui/TapToOpenModal";
+import { SceneNavigator } from "@/components/ui/SceneNavigator";
 
 export default function InvitationHomePage() {
   const [language, setLanguage] = useState<Language>("en");
@@ -123,6 +124,9 @@ export default function InvitationHomePage() {
           language={language}
         />
       </div>
+
+      {/* Floating Cinematic Scene Navigator */}
+      <SceneNavigator language={language} />
     </main>
   );
 }

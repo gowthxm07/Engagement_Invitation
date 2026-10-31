@@ -14,10 +14,15 @@ export const TapToOpenModal: React.FC<TapToOpenModalProps> = ({
   language,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const handleTap = () => {
-    setIsOpen(true);
+    if (isClosing || isOpen) return;
+    setIsClosing(true);
     onOpen();
+    setTimeout(() => {
+      setIsOpen(true);
+    }, 450);
   };
 
   if (isOpen) return null;
@@ -25,37 +30,48 @@ export const TapToOpenModal: React.FC<TapToOpenModalProps> = ({
   return (
     <div
       onClick={handleTap}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-700 cursor-pointer"
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm cursor-pointer transition-all duration-500 ease-out select-none ${
+        isClosing ? "opacity-0 pointer-events-none scale-105" : "opacity-100"
+      }`}
       role="button"
       tabIndex={0}
       aria-label="Tap to open invitation"
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") handleTap();
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleTap();
+        }
       }}
     >
-      <div className="relative max-w-sm w-full mx-auto p-8 rounded-2xl bg-gradient-to-b from-[#70082f] via-[#580524] to-[#3b0318] border-2 border-[#e8b32e] text-center shadow-2xl overflow-hidden animate-float">
+      <div
+        className={`relative max-w-sm w-full mx-auto p-7 xs:p-8 rounded-3xl bg-gradient-to-b from-[#70082f] via-[#580524] to-[#3b0318] border-2 border-[#e8b32e] text-center shadow-2xl overflow-hidden transition-all duration-500 ${
+          isClosing ? "scale-95 opacity-0" : "scale-100 opacity-100 animate-float"
+        }`}
+      >
         {/* Decorative corner flourishes */}
-        <div className="absolute top-2 left-2 text-[#fcd55c] text-xs">✦</div>
-        <div className="absolute top-2 right-2 text-[#fcd55c] text-xs">✦</div>
-        <div className="absolute bottom-2 left-2 text-[#fcd55c] text-xs">✦</div>
-        <div className="absolute bottom-2 right-2 text-[#fcd55c] text-xs">✦</div>
+        <div className="absolute top-2.5 left-2.5 text-[#fcd55c] text-xs">✦</div>
+        <div className="absolute top-2.5 right-2.5 text-[#fcd55c] text-xs">✦</div>
+        <div className="absolute bottom-2.5 left-2.5 text-[#fcd55c] text-xs">✦</div>
+        <div className="absolute bottom-2.5 right-2.5 text-[#fcd55c] text-xs">✦</div>
 
-        <GaneshaMotif size={64} className="mb-4" />
+        <GaneshaMotif size={68} className="mb-4" />
 
-        <div className="space-y-1 mb-6">
-          <p className="text-xs uppercase tracking-widest text-[#fcd55c]/80 font-royal">
-            Auspicious Engagement Invitation
+        <div className="space-y-1.5 mb-6">
+          <p className="text-[10px] xs:text-xs uppercase tracking-widest text-[#fcd55c]/90 font-royal">
+            {language === "ta" ? "மங்களகரமான அழைப்பிதழ்" : "Auspicious Engagement Invitation"}
           </p>
-          <h2 className="text-2xl font-bold font-royal text-gold-gradient">
-            Praveen S &amp; Swathi N
+          <h2 className="text-2xl xs:text-3xl font-bold font-royal text-gold-gradient">
+            {language === "ta" ? "பிரவீன் & சுவாதி" : "Praveen S & Swathi N"}
           </h2>
           <p className="text-xs text-[#ffe082] font-ornate italic">
-            20 November 2026 • Aarathana Mahaal
+            {language === "ta"
+              ? "வெள்ளி, 20 நவம்பர் 2026 • ஆராதனா மஹால், கரூர்"
+              : "Friday, 20 November 2026 • Aarathana Mahaal, Karur"}
           </p>
         </div>
 
         {/* Pulsing Tap Button */}
-        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#ffd700] via-[#f5c542] to-[#df9e19] text-[#3b0318] font-bold text-sm shadow-lg animate-pulse">
+        <div className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#ffd700] via-[#f5c542] to-[#df9e19] text-[#3b0318] font-bold text-sm shadow-xl hover:scale-105 active:scale-95 transition-transform animate-pulse">
           <svg
             width="18"
             height="18"
@@ -69,12 +85,12 @@ export const TapToOpenModal: React.FC<TapToOpenModalProps> = ({
             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
           </svg>
           <span className={language === "ta" ? "font-tamil-text" : "font-body"}>
-            {language === "ta" ? "அழைப்பிதழைத் திறக்க" : "Tap to Open Invitation"}
+            {language === "ta" ? "அழைப்பிதழைத் திறக்க தொடவும்" : "Tap to Open Invitation"}
           </span>
         </div>
 
-        <p className="mt-4 text-[10px] text-[#fff7df]/60 tracking-wide uppercase">
-          ♫ Plays Traditional Nadaswaram Music
+        <p className="mt-4 text-[10px] text-[#fff7df]/70 tracking-wide uppercase font-body">
+          ♫ {language === "ta" ? "பாரம்பரிய இசை ஒலிக்கத் தொடங்கும்" : "Traditional Instrumental Music"}
         </p>
       </div>
     </div>

@@ -61,7 +61,7 @@ export const invitationContent: InvitationContent = {
     fullAddressTamil:
       "446/1C2 அத்தையம்பாரப்பு NH 44, மதுரை பை-பாஸ், எஸ்ஸார் பெட்ரோல் பங்க் அருகில், கரூர், தமிழ்நாடு 639003",
     googleMapsUrl:
-      "https://www.google.com/maps/place/Aarathana+Mahaal+A%2FC/@10.9139767,78.0389935,916m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3baa255f4ba4a8e9:0xd920b5757ad7acd7!8m2!3d10.9139767!4d78.0415684!16s%2Fg%2F11j2wlq36c?entry=ttu",
+      "https://www.google.com/maps/place/Aarathana+Mahaal+A%2FC/@10.9139767,78.0389935,916m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3baa255f4ba4a8e9:0xd920b5757ad7acd7!8m2!3d10.9139767!4d78.0415684!16s%2Fg%2F11j2wlq36c?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D",
     latitude: 10.9139767,
     longitude: 78.0415684,
   },
@@ -91,6 +91,7 @@ export const invitationContent: InvitationContent = {
   coupleIllustratedFullBodyPath: "/images/illustrations/couple_full_body_transparent.png",
   coupleIllustratedPortraitPath: "/images/illustrations/couple_portrait.jpg",
   coupleIllustratedOriginalPath: "/images/illustrations/couple_full_body.jpg",
+  audioTrackPath: "/audio/traditional_instrumental.mp3",
   scenes: [
     {
       id: "scene-1-temple-opening",

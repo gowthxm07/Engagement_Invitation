@@ -88,5 +88,6 @@ export interface InvitationContent {
   coupleIllustratedFullBodyPath: string;
   coupleIllustratedPortraitPath: string;
   coupleIllustratedOriginalPath: string;
+  audioTrackPath?: string;
   scenes: SceneConfig[];
 }
