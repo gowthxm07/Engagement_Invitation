@@ -88,6 +88,9 @@ export const invitationContent: InvitationContent = {
     },
   },
   couplePhotoPath: "C:\\Users\\gowth\\OneDrive\\Desktop\\Engagement\\bride_and_groom.jpeg",
+  coupleIllustratedFullBodyPath: "/images/illustrations/couple_full_body_transparent.png",
+  coupleIllustratedPortraitPath: "/images/illustrations/couple_portrait.jpg",
+  coupleIllustratedOriginalPath: "/images/illustrations/couple_full_body.jpg",
   scenes: [
     {
       id: "scene-1-temple-opening",

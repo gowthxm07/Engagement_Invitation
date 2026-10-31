@@ -85,5 +85,8 @@ export interface InvitationContent {
   venue: VenueDetails;
   placeholders: PlaceholdersConfig;
   couplePhotoPath: string;
+  coupleIllustratedFullBodyPath: string;
+  coupleIllustratedPortraitPath: string;
+  coupleIllustratedOriginalPath: string;
   scenes: SceneConfig[];
 }
