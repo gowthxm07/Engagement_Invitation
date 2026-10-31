@@ -1,6 +1,6 @@
 {
-  "name": "temp_check",
-  "version": "0.1.0",
+  "name": "praveen-swathi-engagement",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

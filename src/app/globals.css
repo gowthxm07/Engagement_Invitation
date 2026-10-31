@@ -1,26 +1,169 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-cinzel-var: var(--font-cinzel);
+  --font-cormorant-var: var(--font-cormorant);
+  --font-montserrat-var: var(--font-montserrat);
+  --font-tamil-var: var(--font-tamil);
+
+  /* South Indian Royal Palette */
+  --color-magenta-deep: #540523;
+  --color-magenta-rich: #770932;
+  --color-magenta-festive: #9d1245;
+  --color-gold-deep: #b38214;
+  --color-gold-pure: #e8b32e;
+  --color-gold-bright: #fcd55c;
+  --color-gold-cream: #fff7df;
+  
+  /* Dusty Pink Theme for Save the Date & Venue */
+  --color-dusty-pink: #f6e2e6;
+  --color-dusty-pink-subtle: #ebd0d7;
+  --color-dusty-pink-deep: #5b2131;
+
+  /* Accent Colors */
+  --color-marigold-orange: #f26522;
+  --color-marigold-yellow: #fbb03b;
+  --color-mango-leaf: #2e7d32;
+  --color-vintage-car: #68b0ab;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: #3b0318;
+    color: #fff9ea;
+    font-family: var(--font-montserrat), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Typography Utilities */
+.font-royal {
+  font-family: var(--font-cinzel), "Times New Roman", serif;
+  letter-spacing: 0.08em;
+}
+
+.font-ornate {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.font-body {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+.font-tamil-text {
+  font-family: var(--font-tamil), serif;
+}
+
+/* Gold Gradient & Text Shimmers */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #fff3c4 0%, #f7c948 40%, #c69214 70%, #fff0ad 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-emboss {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 0 12px rgba(247, 201, 72, 0.35);
+}
+
+.gold-border {
+  border: 1px solid rgba(232, 179, 46, 0.45);
+}
+
+.gold-border-double {
+  border: 3px double rgba(247, 201, 72, 0.65);
+}
+
+/* Mobile Stage Enclosure */
+.mobile-container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+  overflow-x: hidden;
+  background-color: #5b0627;
+}
+
+/* Custom Animations */
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1) rotate(-1deg);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px #ffb300);
+  }
+  25% {
+    transform: scale(1.08, 0.95) rotate(1deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 12px #ff8f00);
+  }
+  50% {
+    transform: scale(0.96, 1.05) rotate(-2deg);
+    opacity: 0.88;
+    filter: drop-shadow(0 0 7px #ffa000);
+  }
+  75% {
+    transform: scale(1.04, 0.98) rotate(1.5deg);
+    opacity: 0.98;
+    filter: drop-shadow(0 0 10px #ffb300);
+  }
+}
+
+.animate-flame {
+  transform-origin: 50% 90%;
+  animation: flameFlicker 2.8s ease-in-out infinite;
+}
+
+@keyframes gentleSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  33% {
+    transform: rotate(1.4deg);
+  }
+  66% {
+    transform: rotate(-1.4deg);
+  }
+}
+
+.animate-sway-slow {
+  transform-origin: top center;
+  animation: gentleSway 5s ease-in-out infinite;
+}
+
+.animate-sway-delayed {
+  transform-origin: top center;
+  animation: gentleSway 5.5s ease-in-out infinite 0.7s;
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: floatGentle 4s ease-in-out infinite;
+}
+
+/* Safe Area Paddings for Modern Mobile Displays */
+.safe-pb {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+.safe-pt {
+  padding-top: calc(1rem + env(safe-area-inset-top, 0px));
 }
