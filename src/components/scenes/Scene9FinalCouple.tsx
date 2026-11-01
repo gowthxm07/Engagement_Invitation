@@ -19,7 +19,7 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
     <section
       id="scene-8"
       aria-label="Final Illustrated Couple Scene with Traditional Decorations"
-      className="relative min-h-[100vh] w-full flex flex-col justify-between items-center px-4 py-8 overflow-hidden bg-gradient-to-b from-[#cf9ea9] via-[#e8c4ce] to-[#ebd0d7] text-[#541829]"
+      className="relative min-h-[100vh] w-full flex flex-col justify-between items-center px-4 pt-4 pb-8 safe-pb overflow-hidden bg-gradient-to-b from-[#cf9ea9] via-[#e8c4ce] to-[#ebd0d7] text-[#541829]"
     >
       {/* Background Kolam Mandala */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-60">
@@ -41,7 +41,7 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
       </div>
 
       {/* Central Gracious Presence Invitation Text */}
-      <div className="relative z-10 text-center max-w-sm mx-auto px-4 space-y-2 mt-4 anim-slide-up delay-250">
+      <div className="relative z-10 text-center max-w-sm mx-auto px-4 space-y-2 mt-2 anim-slide-up delay-250">
         <p className="text-xs uppercase tracking-widest font-semibold text-[#8a334c] font-royal">
           Cordial Invitation
         </p>
@@ -60,18 +60,27 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
       </div>
 
       {/* Illustrated Couple Artwork (Praveen & Swathi) smoothly rising from below */}
-      <div className="relative z-10 w-full max-w-xs mx-auto my-2 anim-couple-rise delay-400">
+      <div className="relative z-10 w-full max-w-xs mx-auto my-1 anim-couple-rise delay-400">
         <TraditionalCoupleAvatar width="100%" />
       </div>
 
       {/* Footer Blessings & Note */}
-      <div className="relative z-10 w-full text-center pb-8 space-y-2 anim-slide-up delay-650">
+      <div className="relative z-10 w-full text-center space-y-1.5 anim-slide-up delay-650">
         <p className="text-xs text-[#6e2236] font-ornate italic">
           Seeking your presence and blessings for a joyous new beginning
         </p>
 
-        <div className="pt-2 text-[10px] text-[#8a334c]/80 uppercase tracking-widest font-royal">
+        <div className="pt-1 text-[10px] text-[#8a334c]/80 uppercase tracking-widest font-royal">
           Praveen S ♥ Swathi N • Karur • 20 Nov 2026
+        </div>
+
+        {/* Elegant Concluding Flourish */}
+        <div className="flex items-center justify-center gap-2 pt-1.5 text-[#8a334c]/50 text-xs">
+          <span>✦</span>
+          <span className="h-[1px] w-8 bg-[#8a334c]/30" />
+          <span>❦</span>
+          <span className="h-[1px] w-8 bg-[#8a334c]/30" />
+          <span>✦</span>
         </div>
       </div>
     </section>

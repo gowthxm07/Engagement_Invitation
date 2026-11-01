@@ -83,7 +83,7 @@ export default function InvitationHomePage() {
       </header>
 
       {/* Continuous Mobile-First Invitation Canvas - 8 Seamless Scroll-Responsive Scenes */}
-      <div className="mobile-container w-full max-w-[440px] shadow-2xl relative bg-[#580524] overflow-hidden">
+      <div className="mobile-container w-full max-w-[440px] shadow-2xl relative overflow-hidden">
         {/* Scene 1: Grand South Indian Temple Opening */}
         <Scene1TempleOpening
           groom={groom}

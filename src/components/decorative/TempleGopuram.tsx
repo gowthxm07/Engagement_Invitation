@@ -11,7 +11,7 @@ export const TempleGopuram: React.FC<TempleGopuramProps> = ({
 }) => {
   return (
     <div className={`relative flex justify-center items-end w-full ${className}`}>
-      <div className="relative w-full max-w-[340px] xs:max-w-[360px] aspect-[692/832] mx-auto drop-shadow-2xl">
+      <div className="relative w-full max-w-[340px] xs:max-w-[360px] aspect-[907/950] mx-auto drop-shadow-2xl">
         <Image
           src="/images/decorations/realistic_gopuram.png"
           alt="Realistic South Indian Dravidian temple gopuram tower with sculpted tiers and golden kalasams"

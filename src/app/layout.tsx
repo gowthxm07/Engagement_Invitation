@@ -55,11 +55,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable} ${notoSerifTamil.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-[#580524] text-white selection:bg-[#f3c64f] selection:text-[#580524] overflow-x-hidden">
+    <html lang="en" suppressHydrationWarning className="h-full antialiased">
+      <body
+        className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable} ${notoSerifTamil.variable} min-h-full flex flex-col bg-[#580524] text-white selection:bg-[#f3c64f] selection:text-[#580524] overflow-x-hidden`}
+      >
         {children}
       </body>
     </html>
