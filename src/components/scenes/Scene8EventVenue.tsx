@@ -20,13 +20,13 @@ export const Scene8EventVenue: React.FC<Scene8EventVenueProps> = ({
       className="relative min-h-[95vh] w-full flex flex-col justify-center items-center px-5 py-12 overflow-hidden bg-gradient-to-b from-[#e8c4ce] via-[#deb7c1] to-[#cf9ea9] text-[#4a1221]"
     >
       {/* Subtle Background Kolam */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-60">
         <KolamPattern size={380} opacity={0.12} />
       </div>
 
       <div className="relative z-10 w-full max-w-sm mx-auto space-y-6 text-center">
         {/* Section Header */}
-        <div className="space-y-1 reveal-on-scroll delay-100">
+        <div className="space-y-1 anim-slide-up delay-100">
           <p className="text-[11px] uppercase tracking-widest font-semibold text-[#6e2236] font-royal">
             Venue &amp; Celebrations
           </p>
@@ -37,7 +37,7 @@ export const Scene8EventVenue: React.FC<Scene8EventVenueProps> = ({
         </div>
 
         {/* Venue Information Box */}
-        <div className="p-6 rounded-2xl bg-white/80 backdrop-blur-xs border border-[#b87d8d] shadow-xl text-center space-y-4 reveal-scale delay-200">
+        <div className="p-6 rounded-2xl bg-white/85 backdrop-blur-xs border border-[#b87d8d] shadow-xl text-center space-y-4 anim-scale-up delay-250">
           <div className="w-12 h-12 mx-auto rounded-full bg-[#580524] text-[#fcd55c] flex items-center justify-center shadow-md">
             <svg
               width="24"
@@ -89,7 +89,7 @@ export const Scene8EventVenue: React.FC<Scene8EventVenueProps> = ({
           </div>
 
           {/* Action Buttons: Google Maps & Add to Calendar */}
-          <div className="pt-2 flex flex-col gap-2.5 reveal-on-scroll delay-300">
+          <div className="pt-2 flex flex-col gap-2.5 anim-slide-up delay-450">
             <DirectionsButton
               url={venue.googleMapsUrl}
               className="w-full"

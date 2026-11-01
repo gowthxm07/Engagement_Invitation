@@ -19,12 +19,12 @@ export const Scene7SaveTheDate: React.FC<Scene7SaveTheDateProps> = ({
       className="relative min-h-[95vh] w-full flex flex-col justify-between items-center px-6 py-12 overflow-hidden bg-gradient-to-b from-[#f8e6ea] via-[#f1d5dc] to-[#e8c4ce] text-[#541829]"
     >
       {/* Background Mandala Watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
         <KolamPattern size={360} opacity={0.16} />
       </div>
 
       {/* Top Header: SAVE THE DATE */}
-      <div className="relative z-10 text-center space-y-1 pt-4 reveal-on-scroll delay-100">
+      <div className="relative z-10 text-center space-y-1 pt-4 anim-slide-down delay-100">
         <p className="text-[11px] uppercase tracking-[0.25em] font-semibold text-[#8a334c] font-royal">
           Please Join Us
         </p>
@@ -34,15 +34,15 @@ export const Scene7SaveTheDate: React.FC<Scene7SaveTheDateProps> = ({
         <div className="w-20 h-0.5 mx-auto bg-[#8a334c]/40" />
       </div>
 
-      {/* Centerpiece: Vintage Mint Car Illustration with smooth slide reveal */}
-      <div className="relative z-10 my-4 transform hover:scale-105 transition-transform duration-500 reveal-slide-left delay-200">
+      {/* Centerpiece: Vintage Mint Car Illustration with smooth horizontal glide from left */}
+      <div className="relative z-10 my-4 transform hover:scale-105 transition-transform duration-500 anim-car-glide delay-250">
         <VintageCar width={260} />
       </div>
 
       {/* Date & Muhurtham Details (Framed in Dusty Pink) */}
-      <div className="relative z-10 w-full max-w-sm mx-auto text-center space-y-4 pb-4 reveal-scale delay-300">
+      <div className="relative z-10 w-full max-w-sm mx-auto text-center space-y-4 pb-4 anim-slide-up delay-450">
         {/* Subamuhurtham Card */}
-        <div className="p-5 rounded-2xl bg-white/70 backdrop-blur-xs border border-[#d49ba8] shadow-md">
+        <div className="p-5 rounded-2xl bg-white/75 backdrop-blur-xs border border-[#d49ba8] shadow-md">
           <div className="space-y-1">
             <span className="inline-block px-3 py-1 rounded-full bg-[#69182f] text-[#fff7df] text-[11px] font-bold uppercase tracking-wider font-royal">
               {event.subamuhurthamLabel}

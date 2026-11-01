@@ -183,75 +183,194 @@
   animation: fadeInAnim 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Cinematic Scroll Reveal Animations */
-.reveal-on-scroll {
+/* ==========================================================================
+   Cinematic Layered Scroll Animation System
+   ========================================================================== */
+
+/* Base initial states for elements before scene activation */
+.anim-gopuram {
+  transform: translate3d(0, 160px, 0) scale(0.88);
   opacity: 0;
-  transform: translate3d(0, 24px, 0);
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+  will-change: transform, opacity;
 }
 
-.reveal-on-scroll.is-revealed {
+.anim-pillar-left {
+  transform: translate3d(-100%, 0, 0);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, opacity 0.65s ease-out 0.1s;
+  will-change: transform, opacity;
+}
+
+.anim-pillar-right {
+  transform: translate3d(100%, 0, 0);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, opacity 0.65s ease-out 0.1s;
+  will-change: transform, opacity;
+}
+
+.anim-lamp-descend {
+  transform: translate3d(0, -90px, 0);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, opacity 0.6s ease-out 0.25s;
+  will-change: transform, opacity;
+}
+
+.anim-slide-up {
+  transform: translate3d(0, 48px, 0);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease-out;
+  will-change: transform, opacity;
+}
+
+.anim-slide-down {
+  transform: translate3d(0, -48px, 0);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease-out;
+  will-change: transform, opacity;
+}
+
+.anim-slide-left {
+  transform: translate3d(-80px, 0, 0);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease-out;
+  will-change: transform, opacity;
+}
+
+.anim-slide-right {
+  transform: translate3d(80px, 0, 0);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease-out;
+  will-change: transform, opacity;
+}
+
+.anim-scale-up {
+  transform: scale(0.85) translate3d(0, 24px, 0);
+  opacity: 0;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.75s ease-out;
+  will-change: transform, opacity;
+}
+
+.anim-pop {
+  transform: scale(0.3) rotate(-10deg);
+  opacity: 0;
+  transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease-out;
+  will-change: transform, opacity;
+}
+
+.anim-car-glide {
+  transform: translate3d(-140px, 0, 0) scale(0.92);
+  opacity: 0;
+  transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, opacity 0.8s ease-out 0.25s;
+  will-change: transform, opacity;
+}
+
+.anim-couple-rise {
+  transform: translate3d(0, 90px, 0) scale(0.88);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s, opacity 0.85s ease-out 0.35s;
+  will-change: transform, opacity;
+}
+
+/* Activated states when parent scene has .scene-visible */
+.scene-visible .anim-gopuram {
+  transform: translate3d(0, 0, 0) scale(1);
   opacity: 1;
+}
+
+.scene-visible .anim-pillar-left {
   transform: translate3d(0, 0, 0);
-}
-
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.92) translate3d(0, 16px, 0);
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-scale.is-revealed {
   opacity: 1;
+}
+
+.scene-visible .anim-pillar-right {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.scene-visible .anim-lamp-descend {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.scene-visible .anim-slide-up {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.scene-visible .anim-slide-down {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.scene-visible .anim-slide-left {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.scene-visible .anim-slide-right {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.scene-visible .anim-scale-up {
   transform: scale(1) translate3d(0, 0, 0);
-}
-
-.reveal-slide-left {
-  opacity: 0;
-  transform: translate3d(-32px, 0, 0);
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-slide-left.is-revealed {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
 }
 
-.reveal-slide-right {
-  opacity: 0;
-  transform: translate3d(32px, 0, 0);
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-slide-right.is-revealed {
+.scene-visible .anim-pop {
+  transform: scale(1) rotate(0deg);
   opacity: 1;
-  transform: translate3d(0, 0, 0);
 }
 
-.delay-100 {
-  transition-delay: 100ms;
+.scene-visible .anim-car-glide {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
 }
 
-.delay-200 {
-  transition-delay: 200ms;
+.scene-visible .anim-couple-rise {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
 }
 
-.delay-300 {
-  transition-delay: 300ms;
+/* Stagger transition delays */
+.delay-75 { transition-delay: 75ms !important; }
+.delay-100 { transition-delay: 100ms !important; }
+.delay-150 { transition-delay: 150ms !important; }
+.delay-200 { transition-delay: 200ms !important; }
+.delay-250 { transition-delay: 250ms !important; }
+.delay-300 { transition-delay: 300ms !important; }
+.delay-350 { transition-delay: 350ms !important; }
+.delay-400 { transition-delay: 400ms !important; }
+.delay-450 { transition-delay: 450ms !important; }
+.delay-500 { transition-delay: 500ms !important; }
+.delay-600 { transition-delay: 600ms !important; }
+.delay-700 { transition-delay: 700ms !important; }
+.delay-800 { transition-delay: 800ms !important; }
+.delay-900 { transition-delay: 900ms !important; }
+
+/* Subtle Gold Light Sweep on Reveal */
+@keyframes goldLightSweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
-.delay-400 {
-  transition-delay: 400ms;
+.gold-sweep-on-reveal {
+  background: linear-gradient(90deg, #f7c948 0%, #fff7df 35%, #ffd700 65%, #c69214 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.delay-500 {
-  transition-delay: 500ms;
+.scene-visible .gold-sweep-on-reveal {
+  animation: goldLightSweep 2s ease-out 0.6s 1 normal forwards;
 }
 
+/* Fallback for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -259,12 +378,11 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal-on-scroll,
-  .reveal-scale,
-  .reveal-slide-left,
-  .reveal-slide-right {
+  [class*="anim-"],
+  .gold-sweep-on-reveal {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+    animation: none !important;
   }
 }

@@ -22,12 +22,12 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
       className="relative min-h-[100vh] w-full flex flex-col justify-between items-center px-4 py-8 overflow-hidden bg-gradient-to-b from-[#cf9ea9] via-[#e8c4ce] to-[#ebd0d7] text-[#541829]"
     >
       {/* Background Kolam Mandala */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-60">
         <KolamPattern size={400} opacity={0.15} />
       </div>
 
-      {/* Hanging Marigold Garlands Framing Top (Left & Right clusters) */}
-      <div className="w-full relative z-20 flex justify-between px-6 pt-2">
+      {/* Hanging Marigold Garlands Framing Top descending from above */}
+      <div className="w-full relative z-20 flex justify-between px-6 pt-2 anim-slide-down delay-100">
         <div className="flex gap-2 animate-sway-slow">
           <MarigoldGarland flowerCount={6} />
           <MarigoldGarland flowerCount={8} />
@@ -41,7 +41,7 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
       </div>
 
       {/* Central Gracious Presence Invitation Text */}
-      <div className="relative z-10 text-center max-w-sm mx-auto px-4 space-y-2 mt-4 reveal-on-scroll delay-100">
+      <div className="relative z-10 text-center max-w-sm mx-auto px-4 space-y-2 mt-4 anim-slide-up delay-250">
         <p className="text-xs uppercase tracking-widest font-semibold text-[#8a334c] font-royal">
           Cordial Invitation
         </p>
@@ -59,13 +59,13 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
         </div>
       </div>
 
-      {/* Illustrated Couple Artwork (Praveen & Swathi) with cinematic scale reveal */}
-      <div className="relative z-10 w-full max-w-xs mx-auto my-2 reveal-scale delay-200">
+      {/* Illustrated Couple Artwork (Praveen & Swathi) smoothly rising from below */}
+      <div className="relative z-10 w-full max-w-xs mx-auto my-2 anim-couple-rise delay-400">
         <TraditionalCoupleAvatar width="100%" />
       </div>
 
       {/* Footer Blessings & Note */}
-      <div className="relative z-10 w-full text-center pb-6 space-y-2 reveal-on-scroll delay-300">
+      <div className="relative z-10 w-full text-center pb-8 space-y-2 anim-slide-up delay-650">
         <p className="text-xs text-[#6e2236] font-ornate italic">
           Seeking your presence and blessings for a joyous new beginning
         </p>

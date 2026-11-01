@@ -13,16 +13,13 @@ export const TemplePillars: React.FC<TemplePillarsProps> = ({
 
   return (
     <div
-      className={`absolute top-0 bottom-0 pointer-events-none z-10 ${
+      className={`absolute top-0 bottom-0 pointer-events-none z-10 w-[68px] ${
         isLeft ? "left-0" : "right-0"
       } ${className}`}
-      style={{
-        transform: isLeft ? "none" : "scaleX(-1)",
-        width: "68px",
-      }}
     >
-      <svg
-        viewBox="0 0 70 500"
+      <div className={`w-full h-full ${!isLeft ? "-scale-x-100" : ""}`}>
+        <svg
+          viewBox="0 0 70 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="none"
@@ -105,6 +102,7 @@ export const TemplePillars: React.FC<TemplePillarsProps> = ({
         <polygon points="0,430 62,430 68,460 0,460" fill="#a4613d" />
         <rect x="0" y="460" width="70" height="40" fill="#7d3e1d" />
       </svg>
+      </div>
     </div>
   );
 };

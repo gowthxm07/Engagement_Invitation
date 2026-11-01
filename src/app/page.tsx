@@ -12,7 +12,6 @@ import { Scene8EventVenue } from "@/components/scenes/Scene8EventVenue";
 import { Scene9FinalCouple } from "@/components/scenes/Scene9FinalCouple";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
 import { TapToOpenModal } from "@/components/ui/TapToOpenModal";
-import { SceneNavigator } from "@/components/ui/SceneNavigator";
 
 export default function InvitationHomePage() {
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -21,15 +20,19 @@ export default function InvitationHomePage() {
 
   const handleOpenInvitation = () => {
     setHasInteracted(true);
+    // Immediately activate Scene 1 animation sequence on opening
+    const scene1 = document.getElementById("scene-1");
+    if (scene1) {
+      scene1.classList.add("scene-visible");
+    }
   };
 
-  // Cinematic Scroll Reveal Observer with safety fallback
+  // Coordinated Scroll-Driven Scene Observer (no bottom navigation pill, natural scrolling)
   useEffect(() => {
-    const revealSelectors = ".reveal-on-scroll, .reveal-scale, .reveal-slide-left, .reveal-slide-right";
-    const elements = document.querySelectorAll(revealSelectors);
+    const scenes = document.querySelectorAll<HTMLElement>("section[id^='scene-']");
 
     if (!("IntersectionObserver" in window)) {
-      elements.forEach((el) => el.classList.add("is-revealed"));
+      scenes.forEach((scene) => scene.classList.add("scene-visible"));
       return;
     }
 
@@ -37,28 +40,27 @@ export default function InvitationHomePage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-revealed");
-            observer.unobserve(entry.target);
+            entry.target.classList.add("scene-visible");
+          } else {
+            // When scene completely leaves viewport, reset so scrolling back up re-animates
+            const rect = entry.boundingClientRect;
+            if (rect.top > window.innerHeight || rect.bottom < 0) {
+              entry.target.classList.remove("scene-visible");
+            }
           }
         });
       },
       {
         root: null,
-        rootMargin: "0px 0px -30px 0px",
+        rootMargin: "-20px 0px -20px 0px",
         threshold: 0.12,
       }
     );
 
-    elements.forEach((el) => observer.observe(el));
-
-    // Fallback: Reveal any elements after 2.5s to ensure content is never hidden
-    const fallbackTimer = window.setTimeout(() => {
-      elements.forEach((el) => el.classList.add("is-revealed"));
-    }, 2500);
+    scenes.forEach((scene) => observer.observe(scene));
 
     return () => {
       observer.disconnect();
-      window.clearTimeout(fallbackTimer);
     };
   }, []);
 
@@ -73,14 +75,14 @@ export default function InvitationHomePage() {
       {/* Tap To Open Modal (User-Initiated Opening for Audio & Immersion) */}
       <TapToOpenModal onOpen={handleOpenInvitation} />
 
-      {/* Floating Action Controls - English Music Controller */}
-      <header className="fixed top-3 inset-x-0 max-w-[440px] mx-auto z-40 px-3 flex justify-end items-center pointer-events-none">
+      {/* Floating Action Controls - English Music Controller positioned safely at top-right */}
+      <header className="fixed top-3.5 right-3.5 z-40 pointer-events-none">
         <div className="pointer-events-auto">
           <MusicPlayer autoStartTriggered={hasInteracted} />
         </div>
       </header>
 
-      {/* Continuous Mobile-First Invitation Canvas - 8 Seamless Scenes */}
+      {/* Continuous Mobile-First Invitation Canvas - 8 Seamless Scroll-Responsive Scenes */}
       <div className="mobile-container w-full max-w-[440px] shadow-2xl relative bg-[#580524] overflow-hidden">
         {/* Scene 1: Grand South Indian Temple Opening */}
         <Scene1TempleOpening
@@ -131,9 +133,6 @@ export default function InvitationHomePage() {
           event={event}
         />
       </div>
-
-      {/* Floating Cinematic Scene Navigator */}
-      <SceneNavigator />
     </main>
   );
 }

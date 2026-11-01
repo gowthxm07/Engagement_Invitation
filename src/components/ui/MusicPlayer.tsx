@@ -22,8 +22,10 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const oscillatorsRef = useRef<OscillatorNode[]>([]);
   const lfosRef = useRef<OscillatorNode[]>([]);
   const isSynthInitializedRef = useRef(false);
+  const hasAutoStartedRef = useRef(false);
+  const isMutedRef = useRef(true);
 
-  // Initialize Web Audio Tanpura synthesizer once
+  // Initialize Web Audio Tanpura drone synthesizer once
   const initTanpuraSynth = useCallback(() => {
     if (isSynthInitializedRef.current && audioCtxRef.current) {
       return true;
@@ -38,12 +40,14 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       const ctx = new AudioCtxClass();
       audioCtxRef.current = ctx;
 
-      // Master Gain for instantaneous, zero-leak muting & unmuting
+      // Single Master Gain for complete, leak-free volume control
       const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0.08, ctx.currentTime);
+      // Start muted until explicitly played
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.value = 0;
       masterGainRef.current = masterGain;
 
-      // Warm low-pass filter (simulates wooden body resonance of Tanjore Tanpura)
+      // Warm low-pass acoustic resonance filter
       const filter = ctx.createBiquadFilter();
       filter.type = "lowpass";
       filter.frequency.setValueAtTime(820, ctx.currentTime);
@@ -63,11 +67,9 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
         osc.type = idx % 2 === 0 ? "sine" : "triangle";
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-        // Acoustic natural detuning
         osc.detune.setValueAtTime((idx - 1.5) * 3.5, ctx.currentTime);
 
-        // Cyclic amplitude modulation simulating gentle plucking cycle (Pa -> Sa -> Sa -> Sa)
+        // Cyclic amplitude modulation simulating gentle acoustic plucking
         const lfo = ctx.createOscillator();
         const lfoGain = ctx.createGain();
         lfo.frequency.setValueAtTime(0.22 + idx * 0.07, ctx.currentTime);
@@ -94,11 +96,14 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   }, []);
 
-  // Play / Resume sound
+  // Play / Resume sound on all active sources
   const playSound = useCallback(async () => {
-    // 1. If an actual MP3 audio track is present and loaded, prefer it
+    isMutedRef.current = false;
+
+    // 1. If HTML audio track is loaded and present, play it
     if (audioRef.current && isAudioLoaded) {
       try {
+        audioRef.current.muted = false;
         await audioRef.current.play();
         setIsPlaying(true);
         return;
@@ -107,41 +112,48 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       }
     }
 
-    // 2. Otherwise use the classical South Indian Tanpura synthesizer
+    // 2. Web Audio Tanpura synthesizer
     if (!isSynthInitializedRef.current) {
-      const initialized = initTanpuraSynth();
-      if (initialized && audioCtxRef.current) {
-        if (audioCtxRef.current.state === "suspended") {
-          await audioCtxRef.current.resume();
-        }
-        if (masterGainRef.current) {
-          masterGainRef.current.gain.setValueAtTime(0.08, audioCtxRef.current.currentTime);
-        }
-        setIsPlaying(true);
-      }
-    } else if (audioCtxRef.current) {
+      initTanpuraSynth();
+    }
+
+    if (audioCtxRef.current) {
       if (audioCtxRef.current.state === "suspended") {
-        await audioCtxRef.current.resume();
+        try {
+          await audioCtxRef.current.resume();
+        } catch {
+          // ignore
+        }
       }
       if (masterGainRef.current) {
+        masterGainRef.current.gain.cancelScheduledValues(0);
         masterGainRef.current.gain.setValueAtTime(0.08, audioCtxRef.current.currentTime);
+        masterGainRef.current.gain.value = 0.08;
       }
       setIsPlaying(true);
     }
   }, [initTanpuraSynth, isAudioLoaded]);
 
-  // Mute / Pause sound immediately
+  // Mute / Silence sound on all active sources immediately
   const muteSound = useCallback(() => {
-    // 1. Pause HTML5 audio element
+    isMutedRef.current = true;
+
+    // 1. Mute and pause HTML audio element
     if (audioRef.current) {
       audioRef.current.pause();
+      audioRef.current.muted = true;
     }
 
-    // 2. Silence Web Audio synthesizer instantly
-    if (audioCtxRef.current) {
-      if (masterGainRef.current) {
+    // 2. Instantly set Web Audio master gain to 0
+    if (audioCtxRef.current && masterGainRef.current) {
+      try {
+        masterGainRef.current.gain.cancelScheduledValues(0);
         masterGainRef.current.gain.setValueAtTime(0, audioCtxRef.current.currentTime);
+        masterGainRef.current.gain.value = 0;
+      } catch {
+        // ignore
       }
+
       if (audioCtxRef.current.state === "running") {
         audioCtxRef.current.suspend().catch(() => {});
       }
@@ -159,17 +171,15 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   };
 
-  // Trigger auto-start when user opens the card modal
+  // Trigger auto-start EXACTLY ONCE when visitor opens the card modal
   useEffect(() => {
-    if (autoStartTriggered && !isPlaying) {
-      const timer = window.setTimeout(() => {
-        playSound();
-      }, 50);
-      return () => window.clearTimeout(timer);
+    if (autoStartTriggered && !hasAutoStartedRef.current) {
+      hasAutoStartedRef.current = true;
+      playSound();
     }
-  }, [autoStartTriggered, isPlaying, playSound]);
+  }, [autoStartTriggered, playSound]);
 
-  // Clean up on component unmount
+  // Clean up all audio nodes on component unmount
   useEffect(() => {
     return () => {
       oscillatorsRef.current.forEach((osc) => {
@@ -208,16 +218,8 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       <button
         type="button"
         onClick={toggleMusic}
-        aria-label={
-          isPlaying
-            ? "Mute traditional instrumental music"
-            : "Play traditional instrumental music"
-        }
-        title={
-          isPlaying
-            ? "Playing traditional music (Tap to mute)"
-            : "Traditional music muted (Tap to play)"
-        }
+        aria-label={isPlaying ? "Mute music" : "Unmute music"}
+        title={isPlaying ? "Mute music" : "Unmute music"}
         className={`w-11 h-11 rounded-full flex items-center justify-center bg-[#3b0318]/90 backdrop-blur-md border border-[#e8b32e] text-[#fcd55c] shadow-lg transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#fcd55c] cursor-pointer ${className}`}
       >
         {isPlaying ? (
