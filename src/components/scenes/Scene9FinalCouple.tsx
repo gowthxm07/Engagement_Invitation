@@ -2,24 +2,22 @@ import React from "react";
 import { TraditionalCoupleAvatar } from "@/components/decorative/TraditionalCoupleAvatar";
 import { MarigoldGarland } from "@/components/decorative/MarigoldGarland";
 import { KolamPattern } from "@/components/decorative/KolamPattern";
-import { EventDetails, Language, PersonDetails } from "@/types/invitation";
+import { EventDetails, PersonDetails } from "@/types/invitation";
 
 interface Scene9FinalCoupleProps {
   groom: PersonDetails;
   bride: PersonDetails;
   event: EventDetails;
-  language: Language;
 }
 
 export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
   groom,
   bride,
   event,
-  language,
 }) => {
   return (
     <section
-      id="scene-9"
+      id="scene-8"
       aria-label="Final Illustrated Couple Scene with Traditional Decorations"
       className="relative min-h-[100vh] w-full flex flex-col justify-between items-center px-4 py-8 overflow-hidden bg-gradient-to-b from-[#cf9ea9] via-[#e8c4ce] to-[#ebd0d7] text-[#541829]"
     >
@@ -43,39 +41,33 @@ export const Scene9FinalCouple: React.FC<Scene9FinalCoupleProps> = ({
       </div>
 
       {/* Central Gracious Presence Invitation Text */}
-      <div className="relative z-10 text-center max-w-sm mx-auto px-4 space-y-2 mt-4">
+      <div className="relative z-10 text-center max-w-sm mx-auto px-4 space-y-2 mt-4 reveal-on-scroll delay-100">
         <p className="text-xs uppercase tracking-widest font-semibold text-[#8a334c] font-royal">
-          {language === "ta" ? "அன்பான அழைப்பு" : "Cordial Invitation"}
+          Cordial Invitation
         </p>
 
         <h2 className="text-xl xs:text-2xl font-extrabold text-[#580524] font-ornate leading-snug">
-          {language === "ta"
-            ? event.formalInvitationNoteTamil
-            : event.formalInvitationNote}
+          {event.formalInvitationNote}
         </h2>
 
         <div className="flex items-center justify-center gap-2 pt-2">
           <span className="h-[1px] w-12 bg-[#8a334c]/40" />
           <span className="text-xs font-royal font-bold text-[#69182f]">
-            {language === "ta"
-              ? `${groom.nameTamil} & ${bride.nameTamil}`
-              : `${groom.name} & ${bride.name}`}
+            {groom.name} &amp; {bride.name}
           </span>
           <span className="h-[1px] w-12 bg-[#8a334c]/40" />
         </div>
       </div>
 
-      {/* Illustrated Couple Artwork (Praveen & Swathi) */}
-      <div className="relative z-10 w-full max-w-xs mx-auto my-2">
+      {/* Illustrated Couple Artwork (Praveen & Swathi) with cinematic scale reveal */}
+      <div className="relative z-10 w-full max-w-xs mx-auto my-2 reveal-scale delay-200">
         <TraditionalCoupleAvatar width="100%" />
       </div>
 
       {/* Footer Blessings & Note */}
-      <div className="relative z-10 w-full text-center pb-6 space-y-2">
+      <div className="relative z-10 w-full text-center pb-6 space-y-2 reveal-on-scroll delay-300">
         <p className="text-xs text-[#6e2236] font-ornate italic">
-          {language === "ta"
-            ? "தங்கள் வருகை எங்கள் இல்லத்திற்கு பெருமை சேர்க்கும்"
-            : "Seeking your presence and blessings for a joyous new beginning"}
+          Seeking your presence and blessings for a joyous new beginning
         </p>
 
         <div className="pt-2 text-[10px] text-[#8a334c]/80 uppercase tracking-widest font-royal">

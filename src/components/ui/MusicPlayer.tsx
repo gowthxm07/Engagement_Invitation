@@ -14,43 +14,48 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   className = "",
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [usingSynthesizer, setUsingSynthesizer] = useState(false);
+  const [isAudioLoaded, setIsAudioLoaded] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const synthNodesRef = useRef<{ stop: () => void } | null>(null);
+  const masterGainRef = useRef<GainNode | null>(null);
+  const oscillatorsRef = useRef<OscillatorNode[]>([]);
+  const lfosRef = useRef<OscillatorNode[]>([]);
+  const isSynthInitializedRef = useRef(false);
 
-  // Soft Indian classical Tanpura drone synthesizer (C# / Pa-Sa-Sa-Kharja)
-  const startTanpuraSynth = () => {
+  // Initialize Web Audio Tanpura synthesizer once
+  const initTanpuraSynth = useCallback(() => {
+    if (isSynthInitializedRef.current && audioCtxRef.current) {
+      return true;
+    }
+
     try {
       const AudioCtxClass =
         window.AudioContext ||
         (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!AudioCtxClass) return false;
 
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new AudioCtxClass();
-      }
-      const ctx = audioCtxRef.current;
-      if (ctx.state === "suspended") {
-        ctx.resume();
-      }
+      const ctx = new AudioCtxClass();
+      audioCtxRef.current = ctx;
 
-      // Master Gain
+      // Master Gain for instantaneous, zero-leak muting & unmuting
       const masterGain = ctx.createGain();
       masterGain.gain.setValueAtTime(0.08, ctx.currentTime);
+      masterGainRef.current = masterGain;
 
-      // Low pass filter for warm, soothing timbre
+      // Warm low-pass filter (simulates wooden body resonance of Tanjore Tanpura)
       const filter = ctx.createBiquadFilter();
       filter.type = "lowpass";
-      filter.frequency.setValueAtTime(800, ctx.currentTime);
+      filter.frequency.setValueAtTime(820, ctx.currentTime);
+      filter.Q.setValueAtTime(1.2, ctx.currentTime);
       filter.connect(ctx.destination);
       masterGain.connect(filter);
 
-      // Classical South Indian scale notes (C# key):
-      // Pa (G#3 = 207.65 Hz), Sa (C#4 = 277.18 Hz), Sa (277.18 Hz), Kharja (C#3 = 138.59 Hz)
+      // Traditional South Indian Panchama Shruthi scale (Key: C# / Pa-Sa-Sa-Kharja)
+      // Pa (G#3 = 207.65 Hz), Madhya Sa (C#4 = 277.18 Hz), Anusa (277.6 Hz), Mandra Kharja (C#3 = 138.59 Hz)
       const freqs = [207.65, 277.18, 277.6, 138.59];
-      const oscillators: OscillatorNode[] = [];
-      const gains: GainNode[] = [];
+      const oscs: OscillatorNode[] = [];
+      const lfos: OscillatorNode[] = [];
 
       freqs.forEach((freq, idx) => {
         const osc = ctx.createOscillator();
@@ -59,101 +64,130 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         osc.type = idx % 2 === 0 ? "sine" : "triangle";
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
 
-        // Subtle harmonic detuning for acoustic warmth
-        osc.detune.setValueAtTime((idx - 1.5) * 4, ctx.currentTime);
+        // Acoustic natural detuning
+        osc.detune.setValueAtTime((idx - 1.5) * 3.5, ctx.currentTime);
 
-        // Cyclic amplitude modulation simulating tanpura plucking
+        // Cyclic amplitude modulation simulating gentle plucking cycle (Pa -> Sa -> Sa -> Sa)
         const lfo = ctx.createOscillator();
         const lfoGain = ctx.createGain();
-        lfo.frequency.setValueAtTime(0.25 + idx * 0.08, ctx.currentTime);
-        lfoGain.gain.setValueAtTime(0.02, ctx.currentTime);
+        lfo.frequency.setValueAtTime(0.22 + idx * 0.07, ctx.currentTime);
+        lfoGain.gain.setValueAtTime(0.025, ctx.currentTime);
         lfo.connect(gain.gain);
         lfo.start();
 
-        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.setValueAtTime(0.055, ctx.currentTime);
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start();
 
-        oscillators.push(osc);
-        gains.push(gain);
+        oscs.push(osc);
+        lfos.push(lfo);
       });
 
-      synthNodesRef.current = {
-        stop: () => {
-          oscillators.forEach((osc) => {
-            try {
-              osc.stop();
-              osc.disconnect();
-            } catch {
-              // ignore
-            }
-          });
-          synthNodesRef.current = null;
-        },
-      };
-
-      setUsingSynthesizer(true);
+      oscillatorsRef.current = oscs;
+      lfosRef.current = lfos;
+      isSynthInitializedRef.current = true;
       return true;
     } catch (e) {
-      console.warn("Web Audio synthesis not supported or blocked:", e);
+      console.warn("Web Audio API not supported or blocked by browser:", e);
       return false;
     }
-  };
+  }, []);
 
-  const stopAllAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    if (synthNodesRef.current) {
-      synthNodesRef.current.stop();
-    }
-    setIsPlaying(false);
-  };
-
-  const playAudio = useCallback(async () => {
-    // First try the configured audio track
-    if (audioRef.current && audioSrc) {
+  // Play / Resume sound
+  const playSound = useCallback(async () => {
+    // 1. If an actual MP3 audio track is present and loaded, prefer it
+    if (audioRef.current && isAudioLoaded) {
       try {
         await audioRef.current.play();
         setIsPlaying(true);
-        setUsingSynthesizer(false);
         return;
       } catch {
-        // Fallback to synthesizer
+        // Fall back to synthesizer if HTML5 Audio is blocked
       }
     }
 
-    // Fallback to soft Tanpura drone synthesizer
-    const started = startTanpuraSynth();
-    if (started) {
+    // 2. Otherwise use the classical South Indian Tanpura synthesizer
+    if (!isSynthInitializedRef.current) {
+      const initialized = initTanpuraSynth();
+      if (initialized && audioCtxRef.current) {
+        if (audioCtxRef.current.state === "suspended") {
+          await audioCtxRef.current.resume();
+        }
+        if (masterGainRef.current) {
+          masterGainRef.current.gain.setValueAtTime(0.08, audioCtxRef.current.currentTime);
+        }
+        setIsPlaying(true);
+      }
+    } else if (audioCtxRef.current) {
+      if (audioCtxRef.current.state === "suspended") {
+        await audioCtxRef.current.resume();
+      }
+      if (masterGainRef.current) {
+        masterGainRef.current.gain.setValueAtTime(0.08, audioCtxRef.current.currentTime);
+      }
       setIsPlaying(true);
     }
-  }, [audioSrc]);
+  }, [initTanpuraSynth, isAudioLoaded]);
 
+  // Mute / Pause sound immediately
+  const muteSound = useCallback(() => {
+    // 1. Pause HTML5 audio element
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+
+    // 2. Silence Web Audio synthesizer instantly
+    if (audioCtxRef.current) {
+      if (masterGainRef.current) {
+        masterGainRef.current.gain.setValueAtTime(0, audioCtxRef.current.currentTime);
+      }
+      if (audioCtxRef.current.state === "running") {
+        audioCtxRef.current.suspend().catch(() => {});
+      }
+    }
+
+    setIsPlaying(false);
+  }, []);
+
+  // Reliable Toggle handler
   const toggleMusic = () => {
     if (isPlaying) {
-      stopAllAudio();
+      muteSound();
     } else {
-      playAudio();
+      playSound();
     }
   };
 
+  // Trigger auto-start when user opens the card modal
   useEffect(() => {
     if (autoStartTriggered && !isPlaying) {
       const timer = window.setTimeout(() => {
-        playAudio();
+        playSound();
       }, 50);
       return () => window.clearTimeout(timer);
     }
-  }, [autoStartTriggered, isPlaying, playAudio]);
+  }, [autoStartTriggered, isPlaying, playSound]);
 
-  // Clean up on unmount
+  // Clean up on component unmount
   useEffect(() => {
     return () => {
-      if (synthNodesRef.current) {
-        synthNodesRef.current.stop();
-      }
+      oscillatorsRef.current.forEach((osc) => {
+        try {
+          osc.stop();
+          osc.disconnect();
+        } catch {
+          // ignore
+        }
+      });
+      lfosRef.current.forEach((lfo) => {
+        try {
+          lfo.stop();
+          lfo.disconnect();
+        } catch {
+          // ignore
+        }
+      });
       if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
         audioCtxRef.current.close().catch(() => {});
       }
@@ -167,10 +201,8 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         src={audioSrc}
         loop
         preload="auto"
-        onError={() => {
-          // If file does not exist, silence the console error and mark for synth fallback
-          setUsingSynthesizer(true);
-        }}
+        onCanPlay={() => setIsAudioLoaded(true)}
+        onError={() => setIsAudioLoaded(false)}
       />
 
       <button
@@ -183,12 +215,10 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         }
         title={
           isPlaying
-            ? usingSynthesizer
-              ? "Playing soft Tanpura drone (Tap to mute)"
-              : "Playing traditional music (Tap to mute)"
-            : "Play traditional music"
+            ? "Playing traditional music (Tap to mute)"
+            : "Traditional music muted (Tap to play)"
         }
-        className={`w-11 h-11 rounded-full flex items-center justify-center bg-[#3b0318]/90 backdrop-blur-md border border-[#e8b32e] text-[#fcd55c] shadow-lg transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#fcd55c] ${className}`}
+        className={`w-11 h-11 rounded-full flex items-center justify-center bg-[#3b0318]/90 backdrop-blur-md border border-[#e8b32e] text-[#fcd55c] shadow-lg transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#fcd55c] cursor-pointer ${className}`}
       >
         {isPlaying ? (
           // Playing: Animated equalizer sound bars
@@ -208,7 +238,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="pointer-events-none"
+            className="pointer-events-none text-[#fcd55c]"
             aria-hidden="true"
           >
             <path d="M9 18V5l12-2v13" />

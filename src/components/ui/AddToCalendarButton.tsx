@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Language } from "@/types/invitation";
 
 interface AddToCalendarButtonProps {
-  language: Language;
   className?: string;
 }
 
 export const AddToCalendarButton: React.FC<AddToCalendarButtonProps> = ({
-  language,
   className = "",
 }) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -68,9 +65,9 @@ export const AddToCalendarButton: React.FC<AddToCalendarButtonProps> = ({
         <button
           type="button"
           onClick={() => setShowOptions(true)}
-          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full font-medium text-sm transition-all duration-300 shadow-md text-[#fcd55c] bg-[#3b0318]/90 hover:bg-[#4d0420] border border-[#e8b32e]/60 active:scale-95"
+          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full font-medium text-sm transition-all duration-300 shadow-md text-[#fcd55c] bg-[#3b0318]/90 hover:bg-[#4d0420] border border-[#e8b32e]/60 active:scale-95 cursor-pointer"
           aria-expanded={showOptions}
-          aria-label={language === "ta" ? "நாட்காட்டியில் சேர்க்க" : "Add to Calendar"}
+          aria-label="Add to Calendar"
         >
           <svg
             width="18"
@@ -88,14 +85,14 @@ export const AddToCalendarButton: React.FC<AddToCalendarButtonProps> = ({
             <line x1="8" y1="2" x2="8" y2="6" />
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
-          <span className={language === "ta" ? "font-tamil-text" : "font-body"}>
-            {language === "ta" ? "நாட்காட்டியில் சேர்க்க" : "Add to Calendar"}
+          <span className="font-body">
+            Add to Calendar
           </span>
         </button>
       ) : (
         <div className="flex flex-col gap-2 p-3 rounded-2xl bg-[#440319] border border-[#e8b32e]/70 shadow-xl animate-fadeIn">
           <p className="text-[11px] font-semibold text-[#fcd55c] uppercase tracking-wider text-center font-royal">
-            {language === "ta" ? "நாட்காட்டி தேர்வு செய்க" : "Choose Calendar"}
+            Choose Calendar
           </p>
           <div className="grid grid-cols-2 gap-2">
             {/* Google Calendar */}
@@ -103,7 +100,7 @@ export const AddToCalendarButton: React.FC<AddToCalendarButtonProps> = ({
               href={googleCalendarUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#580524] text-[#fff7df] text-xs font-semibold border border-[#e8b32e]/40 hover:bg-[#6e072d] active:scale-95 transition-all text-center"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#580524] text-[#fff7df] text-xs font-semibold border border-[#e8b32e]/40 hover:bg-[#6e072d] active:scale-95 transition-all text-center cursor-pointer"
             >
               <span>📅</span>
               <span>Google Cal</span>
@@ -113,7 +110,7 @@ export const AddToCalendarButton: React.FC<AddToCalendarButtonProps> = ({
             <a
               href={generateIcsDataUri()}
               download="Praveen_Swathi_Engagement.ics"
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#580524] text-[#fff7df] text-xs font-semibold border border-[#e8b32e]/40 hover:bg-[#6e072d] active:scale-95 transition-all text-center"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#580524] text-[#fff7df] text-xs font-semibold border border-[#e8b32e]/40 hover:bg-[#6e072d] active:scale-95 transition-all text-center cursor-pointer"
             >
               <span>🍏</span>
               <span>Apple / ics</span>
@@ -122,9 +119,9 @@ export const AddToCalendarButton: React.FC<AddToCalendarButtonProps> = ({
           <button
             type="button"
             onClick={() => setShowOptions(false)}
-            className="text-[11px] text-[#ffe082]/70 hover:text-white pt-1"
+            className="text-[11px] text-[#ffe082]/70 hover:text-white pt-1 cursor-pointer"
           >
-            {language === "ta" ? "மூடுக ✕" : "Close ✕"}
+            Close ✕
           </button>
         </div>
       )}

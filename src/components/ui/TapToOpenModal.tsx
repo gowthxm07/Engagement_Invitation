@@ -2,16 +2,13 @@
 
 import React, { useState } from "react";
 import { GaneshaMotif } from "@/components/decorative/GaneshaMotif";
-import { Language } from "@/types/invitation";
 
 interface TapToOpenModalProps {
   onOpen: () => void;
-  language: Language;
 }
 
 export const TapToOpenModal: React.FC<TapToOpenModalProps> = ({
   onOpen,
-  language,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -58,15 +55,13 @@ export const TapToOpenModal: React.FC<TapToOpenModalProps> = ({
 
         <div className="space-y-1.5 mb-6">
           <p className="text-[10px] xs:text-xs uppercase tracking-widest text-[#fcd55c]/90 font-royal">
-            {language === "ta" ? "மங்களகரமான அழைப்பிதழ்" : "Auspicious Engagement Invitation"}
+            Auspicious Engagement Invitation
           </p>
           <h2 className="text-2xl xs:text-3xl font-bold font-royal text-gold-gradient">
-            {language === "ta" ? "பிரவீன் & சுவாதி" : "Praveen S & Swathi N"}
+            Praveen S &amp; Swathi N
           </h2>
           <p className="text-xs text-[#ffe082] font-ornate italic">
-            {language === "ta"
-              ? "வெள்ளி, 20 நவம்பர் 2026 • ஆராதனா மஹால், கரூர்"
-              : "Friday, 20 November 2026 • Aarathana Mahaal, Karur"}
+            Friday, 20 November 2026 • Aarathana Mahaal, Karur
           </p>
         </div>
 
@@ -84,13 +79,13 @@ export const TapToOpenModal: React.FC<TapToOpenModalProps> = ({
           >
             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
           </svg>
-          <span className={language === "ta" ? "font-tamil-text" : "font-body"}>
-            {language === "ta" ? "அழைப்பிதழைத் திறக்க தொடவும்" : "Tap to Open Invitation"}
+          <span className="font-body">
+            Tap to Open Invitation
           </span>
         </div>
 
         <p className="mt-4 text-[10px] text-[#fff7df]/70 tracking-wide uppercase font-body">
-          ♫ {language === "ta" ? "பாரம்பரிய இசை ஒலிக்கத் தொடங்கும்" : "Traditional Instrumental Music"}
+          ♫ Traditional Instrumental Music
         </p>
       </div>
     </div>

@@ -1,34 +1,29 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Language } from "@/types/invitation";
 
 interface SceneItem {
   id: string;
   number: number;
-  titleEn: string;
-  titleTa: string;
+  title: string;
 }
 
 const SCENES: SceneItem[] = [
-  { id: "scene-1", number: 1, titleEn: "Temple Opening", titleTa: "கோயில் தொடக்கம்" },
-  { id: "scene-2", number: 2, titleEn: "Divine Blessings", titleTa: "தெய்வத் திருவருள்" },
-  { id: "scene-3", number: 3, titleEn: "Names Reveal", titleTa: "மணமக்கள் பெயர்" },
-  { id: "scene-4", number: 4, titleEn: "Family Blessings", titleTa: "குடும்ப ஆசிகள்" },
-  { id: "scene-5", number: 5, titleEn: "Couple Intro", titleTa: "தம்பதியர் அறிமுகம்" },
-  { id: "scene-6", number: 6, titleEn: "Couple Portraits", titleTa: "தம்பதியர் புகைப்படங்கள்" },
-  { id: "scene-7", number: 7, titleEn: "Save the Date", titleTa: "தேதி விபரம்" },
-  { id: "scene-8", number: 8, titleEn: "Venue & Directions", titleTa: "மண்டப வழிகாட்டுதல்" },
-  { id: "scene-9", number: 9, titleEn: "Auspicious Closing", titleTa: "மங்கள வாழ்த்து" },
+  { id: "scene-1", number: 1, title: "Temple Opening" },
+  { id: "scene-2", number: 2, title: "Divine Blessings" },
+  { id: "scene-3", number: 3, title: "Names Reveal" },
+  { id: "scene-4", number: 4, title: "Groom & Bride" },
+  { id: "scene-5", number: 5, title: "Couple Portrait" },
+  { id: "scene-6", number: 6, title: "Save the Date" },
+  { id: "scene-7", number: 7, title: "Venue & Directions" },
+  { id: "scene-8", number: 8, title: "Auspicious Closing" },
 ];
 
 interface SceneNavigatorProps {
-  language: Language;
   className?: string;
 }
 
 export const SceneNavigator: React.FC<SceneNavigatorProps> = ({
-  language,
   className = "",
 }) => {
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
@@ -102,7 +97,7 @@ export const SceneNavigator: React.FC<SceneNavigatorProps> = ({
             }
           });
         },
-        { threshold: 0.45 }
+        { threshold: 0.4 }
       );
 
       observer.observe(el);
@@ -115,7 +110,6 @@ export const SceneNavigator: React.FC<SceneNavigatorProps> = ({
   }, []);
 
   const currentScene = SCENES[activeSceneIndex] || SCENES[0];
-  const sceneTitle = language === "ta" ? currentScene.titleTa : currentScene.titleEn;
 
   return (
     <nav
@@ -128,11 +122,11 @@ export const SceneNavigator: React.FC<SceneNavigatorProps> = ({
           type="button"
           onClick={handlePrev}
           disabled={activeSceneIndex === 0}
-          aria-label={language === "ta" ? "முந்தைய காட்சி" : "Previous scene"}
+          aria-label="Previous scene"
           className={`w-11 h-11 flex items-center justify-center rounded-full transition-all ${
             activeSceneIndex === 0
               ? "opacity-30 cursor-not-allowed text-[#fff7df]"
-              : "text-[#fcd55c] hover:bg-[#580524] active:scale-90"
+              : "text-[#fcd55c] hover:bg-[#580524] active:scale-90 cursor-pointer"
           }`}
         >
           <svg
@@ -155,20 +149,20 @@ export const SceneNavigator: React.FC<SceneNavigatorProps> = ({
             className="text-[11px] font-bold text-[#fcd55c] tracking-wider uppercase font-royal flex items-center gap-1.5"
             aria-live="polite"
           >
-            <span>{activeSceneIndex + 1}/9</span>
+            <span>{activeSceneIndex + 1}/8</span>
             <span className="text-[#e8b32e]/60">•</span>
-            <span className="truncate max-w-[120px]">{sceneTitle}</span>
+            <span className="truncate max-w-[130px]">{currentScene.title}</span>
           </div>
 
-          {/* Quick Scene Jump Dots */}
+          {/* Quick Scene Jump Dots (8 dots) */}
           <div className="flex items-center gap-1 mt-1">
             {SCENES.map((scene, idx) => (
               <button
                 key={scene.id}
                 type="button"
                 onClick={() => scrollToScene(idx)}
-                aria-label={`Jump to scene ${scene.number}: ${scene.titleEn}`}
-                className={`transition-all duration-300 rounded-full ${
+                aria-label={`Jump to scene ${scene.number}: ${scene.title}`}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
                   idx === activeSceneIndex
                     ? "w-4 h-1.5 bg-[#fcd55c] shadow-xs"
                     : "w-1.5 h-1.5 bg-[#fcd55c]/35 hover:bg-[#fcd55c]/70"
@@ -183,11 +177,11 @@ export const SceneNavigator: React.FC<SceneNavigatorProps> = ({
           type="button"
           onClick={handleNext}
           disabled={activeSceneIndex === SCENES.length - 1}
-          aria-label={language === "ta" ? "அடுத்த காட்சி" : "Next scene"}
+          aria-label="Next scene"
           className={`w-11 h-11 flex items-center justify-center rounded-full transition-all ${
             activeSceneIndex === SCENES.length - 1
               ? "opacity-30 cursor-not-allowed text-[#fff7df]"
-              : "text-[#fcd55c] hover:bg-[#580524] active:scale-90"
+              : "text-[#fcd55c] hover:bg-[#580524] active:scale-90 cursor-pointer"
           }`}
         >
           <svg

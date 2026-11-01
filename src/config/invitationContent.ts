@@ -94,7 +94,7 @@ export const invitationContent: InvitationContent = {
   audioTrackPath: "/audio/traditional_instrumental.mp3",
   scenes: [
     {
-      id: "scene-1-temple-opening",
+      id: "scene-1",
       sceneNumber: 1,
       title: "Grand South Indian Temple Opening",
       componentName: "Scene1TempleOpening",
@@ -102,7 +102,7 @@ export const invitationContent: InvitationContent = {
         "Ceremonial opening with azure morning sky, traditional tiered temple gopuram, carved stone Yali pillars, and hanging brass kuthu vilakku oil lamps.",
     },
     {
-      id: "scene-2-magenta-intro",
+      id: "scene-2",
       sceneNumber: 2,
       title: "Ornamental Magenta & Gold Tapestry",
       componentName: "Scene2MagentaIntro",
@@ -110,7 +110,7 @@ export const invitationContent: InvitationContent = {
         "Rolling perspective tapestry in royal South Indian magenta with golden Lord Ganesha emblem and divine blessing invocation.",
     },
     {
-      id: "scene-3-couple-framing",
+      id: "scene-3",
       sceneNumber: 3,
       title: "Couple Names & Traditional Framing",
       componentName: "Scene3CoupleFraming",
@@ -118,48 +118,40 @@ export const invitationContent: InvitationContent = {
         "Rich magenta ornamental frame accented with fresh mango leaves, red flowers, and vibrant orange/yellow marigold garlands.",
     },
     {
-      id: "scene-4-family-intro",
+      id: "scene-4",
       sceneNumber: 4,
-      title: "Family Lineage & Blessings",
-      componentName: "Scene4FamilyIntro",
-      description:
-        "Honoring the groom and bride's families with elegant typography and clearly structured editable placeholders.",
-    },
-    {
-      id: "scene-5-groom-bride-intro",
-      sceneNumber: 5,
       title: "Golden Groom & Bride Introduction",
       componentName: "Scene5GroomBrideIntro",
       description:
         "Warm celebratory yellow-gold background featuring ornate filigree swirls and glowing brass lamps introducing the couple.",
     },
     {
-      id: "scene-6-photo-collage",
-      sceneNumber: 6,
-      title: "Couple Photograph & Moments Collage",
+      id: "scene-5",
+      sceneNumber: 5,
+      title: "Hand-Painted Engagement Portrait",
       componentName: "Scene6PhotoCollage",
       description:
-        "Showcases the couple's photograph framed with South Indian traditional motifs, preparing for custom avatars in Phase 2.",
+        "Showcases the hand-painted couple portrait framed with South Indian traditional gold arch motifs.",
     },
     {
-      id: "scene-7-save-the-date",
-      sceneNumber: 7,
+      id: "scene-6",
+      sceneNumber: 6,
       title: "Dusty-Pink Save the Date & Vintage Car",
       componentName: "Scene7SaveTheDate",
       description:
         "Dusty-pink backdrop with gold mandala watermark, vintage mint vehicle illustration, Subamuhurtham date and auspicious morning timing.",
     },
     {
-      id: "scene-8-event-venue",
-      sceneNumber: 8,
+      id: "scene-7",
+      sceneNumber: 7,
       title: "Engagement Event & Venue Details",
       componentName: "Scene8EventVenue",
       description:
-        "Aarathana Mahaal in Karur with address, one-tap Google Maps directions, Add to Calendar action, and landmark highlights.",
+        "Aarathana Mahaal in Karur with address, one-tap Google Maps directions, and Add to Calendar action.",
     },
     {
-      id: "scene-9-final-couple",
-      sceneNumber: 9,
+      id: "scene-8",
+      sceneNumber: 8,
       title: "Final Illustrated Couple Blessing",
       componentName: "Scene9FinalCouple",
       description:
