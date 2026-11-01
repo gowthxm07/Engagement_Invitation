@@ -20,15 +20,34 @@ export default function InvitationHomePage() {
 
   const handleOpenInvitation = () => {
     setHasInteracted(true);
-    // Immediately activate Scene 1 animation sequence on opening
-    const scene1 = document.getElementById("scene-1");
-    if (scene1) {
-      scene1.classList.add("scene-visible");
-    }
+    // Immediately activate Scene 1 animation sequence when user opens invitation
+    requestAnimationFrame(() => {
+      const scene1 = document.getElementById("scene-1");
+      if (scene1) {
+        scene1.classList.add("scene-visible");
+      }
+    });
   };
 
-  // Coordinated Scroll-Driven Scene Observer (no bottom navigation pill, natural scrolling)
+  // Prevent background scrolling while opening modal is displayed
   useEffect(() => {
+    if (!hasInteracted) {
+      window.scrollTo(0, 0);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [hasInteracted]);
+
+  // Coordinated Scroll-Driven Scene Observer (activates ONLY after invitation is opened)
+  useEffect(() => {
+    if (!hasInteracted) {
+      return;
+    }
+
     const scenes = document.querySelectorAll<HTMLElement>("section[id^='scene-']");
 
     if (!("IntersectionObserver" in window)) {
@@ -62,7 +81,7 @@ export default function InvitationHomePage() {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [hasInteracted]);
 
   return (
     <main className="min-h-screen w-full bg-[#2c0211] text-white flex justify-center items-start relative selection:bg-[#f3c64f] selection:text-[#580524]">
