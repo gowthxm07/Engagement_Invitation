@@ -31,13 +31,18 @@ export const Scene3CoupleFraming: React.FC<Scene3CoupleFramingProps> = ({
       {/* Central Couple Typography Framing with opposing slide entrances */}
       <div className="relative z-10 w-full max-w-sm mx-auto text-center my-auto py-6 px-4 space-y-4">
         {/* Groom Lineage & Name (Slides in from Left) */}
-        <div className="space-y-1 anim-slide-left delay-250">
-          <p className="text-[11px] font-medium tracking-wide text-[#ffe082]/90 font-ornate">
-            {groom.parentsLineage}
-          </p>
+        <div className="space-y-1.5 anim-slide-left delay-250">
           <h2 className="text-3xl xs:text-4xl font-extrabold tracking-wider font-royal drop-shadow-md gold-sweep-on-reveal">
             {groom.name.toUpperCase()}
           </h2>
+          <div className="space-y-0.5 pt-0.5">
+            <p className="text-xs xs:text-sm font-semibold tracking-wide text-[#ffe082] font-ornate">
+              {groom.parentsLineage}
+            </p>
+            <p className="text-[11px] xs:text-xs text-[#fed7aa]/90 font-tamil-text leading-tight">
+              {groom.parentsLineageTamil}
+            </p>
+          </div>
         </div>
 
         {/* Traditional Weds / Vivaha Symbolism (Pops in at center) */}
@@ -50,13 +55,18 @@ export const Scene3CoupleFraming: React.FC<Scene3CoupleFramingProps> = ({
         </div>
 
         {/* Bride Lineage & Name (Slides in from Right) */}
-        <div className="space-y-1 anim-slide-right delay-550">
+        <div className="space-y-1.5 anim-slide-right delay-550">
           <h2 className="text-3xl xs:text-4xl font-extrabold tracking-wider font-royal drop-shadow-md gold-sweep-on-reveal">
             {bride.name.toUpperCase()}
           </h2>
-          <p className="text-[11px] font-medium tracking-wide text-[#ffe082]/90 font-ornate">
-            {bride.parentsLineage}
-          </p>
+          <div className="space-y-0.5 pt-0.5">
+            <p className="text-xs xs:text-sm font-semibold tracking-wide text-[#ffe082] font-ornate">
+              {bride.parentsLineage}
+            </p>
+            <p className="text-[11px] xs:text-xs text-[#fed7aa]/90 font-tamil-text leading-tight">
+              {bride.parentsLineageTamil}
+            </p>
+          </div>
         </div>
       </div>
 
